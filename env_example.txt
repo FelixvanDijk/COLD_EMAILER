@@ -1,0 +1,23 @@
+# Cold Email Outreach System - Environment Variables
+# Copy this file to .env and fill in your actual values
+
+# Email Configuration (Required)
+EMAIL_ADDRESS=your-email@zoho.com
+EMAIL_PASSWORD=your-app-password
+
+# SMTP Server Configuration
+SMTP_SERVER=smtp.zoho.com
+SMTP_PORT=465
+
+# Instructions:
+# 1. Replace 'your-email@zoho.com' with your actual Zoho email address
+# 2. Replace 'your-app-password' with your Zoho app-specific password
+#    (NOT your regular password - generate an app password in Zoho settings)
+# 3. For Gmail users, change SMTP_SERVER to smtp.gmail.com
+# 4. For Outlook users, change SMTP_SERVER to smtp-mail.outlook.com and SMTP_PORT to 587
+# 5. Save this file as '.env' (without .example extension)
+
+# Security Notes:
+# - Never commit the .env file to version control
+# - Use app-specific passwords, not your main email password
+# - Keep this file secure and don't share it 

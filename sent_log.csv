@@ -1,0 +1,61 @@
+timestamp,email,subject,first_name,last_name,organization,title,city,state,country,type
+2025-06-20T23:06:34.610864,warmup@mail-tester.com,Email System Test,,,,,,,,warmup
+2025-06-20T23:07:05.326050,warmup@inboxkitten.com,Email Infrastructure Test,,,,,,,,warmup
+2025-06-20T23:07:33.099760,warmup@guerrillamail.com,Routine Deliverability Check,,,,,,,,warmup
+2025-06-20T23:07:48.871329,deliverability@tempmail.org,Sender Reputation Warmup,,,,,,,,warmup
+2025-06-20T23:08:19.644761,test@maildrop.cc,Routine Deliverability Check,,,,,,,,warmup
+2025-06-20T23:13:37.938278,john.famelton@inlinefitness.co.uk,Quick idea for Inline Fitness,John,Famelton,Inline Fitness,Owner and Founder,Newcastle upon Tyne,England,United Kingdom,cold
+2025-06-20T23:14:08.653703,olivia@themalefertilityclinic.co.uk,Quick idea for The Male Fertility Clinic,Olivia,Musa,The Male Fertility Clinic,Founder and Owner,London,England,United Kingdom,cold
+2025-06-20T23:14:46.370457,russ@pilatesguy.co.uk,Quick idea for Pilates Guy,Russ,Pain,Pilates Guy,Founder and Owner,,England,United Kingdom,cold
+2025-06-20T23:15:27.037829,abi@alignwellbeing.co.uk,Quick idea for Align Wellbeing,Abi,Lawrence,Align Wellbeing,Owner & Founder,,,United Kingdom,cold
+2025-06-20T23:16:13.167124,scott.white@propertycafe.co,Quick idea for Property Cafe,Scott,White,Property Cafe,Founder and Owner,Bexhill,England,United Kingdom,cold
+2025-06-20T23:17:03.780729,david@functionalnutrition.group,Quick idea for Functional Nutrition Group | Certified B Corporation,David,Brassey,Functional Nutrition Group | Certified B Corporation,Founder | Owner,Sheffield,England,United Kingdom,cold
+2025-06-20T23:17:59.933094,laura@nurture-for-life.com,Quick idea for Nurture for Life Nutrition,Laura,Vincent,Nurture for Life Nutrition,Founder and Owner,,,United Kingdom,cold
+2025-06-20T23:19:01.033899,chardet@corpaofitness.com,Quick idea for Corpão Fitness,Chardet,Ryel,Corpão Fitness,Founder/Owner,London,England,United Kingdom,cold
+2025-06-20T23:20:06.788137,jon@heartwood-homes.co.uk,Quick idea for Heartwood Homes,Jon,Stubbs,Heartwood Homes,Owner/Founder,Saint Albans,England,United Kingdom,cold
+2025-06-20T23:21:17.997362,laura@tillyandfamily.com,Quick idea for Tilly and Family Ltd,Laura,Cook,Tilly and Family Ltd,Co-Founder and Owner,Bath,England,United Kingdom,cold
+2025-06-20T23:22:33.900264,naomi@purerejuvenation.co.uk,Quick idea for Pure Rejuvenation,Naomi,Jacobs,Pure Rejuvenation,Founder and owner,London,England,United Kingdom,cold
+2025-06-20T23:23:55.030199,elly.younie@studio-rg9.com,Quick idea for Studio RG9 Ltd,Elly,Younie,Studio RG9 Ltd,Founder & Owner,Henley-on-Thames,England,United Kingdom,cold
+2025-06-20T23:25:20.849940,russell@executiveathlete.club,Quick idea for Executive Athlete Club,Russell,Stinson,Executive Athlete Club,Founder & Owner,Otford,England,United Kingdom,cold
+2025-06-20T23:26:51.492625,nigel@tenterden.yoga,Quick idea for Tenterden Yoga,Nigel,Wilson,Tenterden Yoga,founder / owner,Tenterden,England,United Kingdom,cold
+2025-06-20T23:28:27.117072,martinl@thelevygroup.london,Quick idea for The Levy Group,Martin,Levy,The Levy Group,Owner/Founder,London,England,United Kingdom,cold
+2025-06-21T00:55:36.599302,info@protonmail.com,SMTP Test Message,sent,warmup,,,,
+2025-06-21T00:57:37.250582,hello@yahoo.com,SMTP Test Message,sent,warmup,,,,
+2025-06-21T00:59:35.860075,info@protonmail.com,System Test,sent,warmup,,,,
+2025-06-21T01:00:41.590020,warmup@outlook.com,Mail System Verification,sent,warmup,,,,
+2025-06-21T01:02:12.578165,hello@yahoo.com,SMTP Test Message,sent,warmup,,,,
+2025-06-21T01:02:13.706567,daigo@futureproof-fitness.com,Quick idea for Futureproof Fitness 💡,sent,cold,Daigo,Smith,Futureproof Fitness,
+2025-06-21T01:03:33.447292,katia@nl-naturopathy.com,Quick idea for North London Naturopathy 💡,sent,cold,Katia,Mauger,North London Naturopathy,
+2025-06-21T01:04:14.257161,k.popham@kpr.global,Quick idea for Joy Paws Dog Hotel 💡,sent,cold,Kim,Popham,Joy Paws Dog Hotel,
+2025-06-21T01:04:14.915232,sarah@fit2drop.com,Quick idea for Fit2drop 💡,sent,cold,Sarah,Dineen,Fit2drop,
+2025-06-21T01:05:17.693778,miro@greenconcept.uk,Helping GREEN CONCEPT LANDSCAPES LIMITED run smoother,sent,cold,Miro,Lazarini,GREEN CONCEPT LANDSCAPES LIMITED,
+2025-06-21T01:07:09.606929,siobhan@mothernaturesanctuary.com,Quick idea for Mother Nature Sanctuary 💡,sent,cold,Siobhan,Alexander,Mother Nature Sanctuary,
+2025-06-21T01:07:10.225035,sally@buenavidafitness.co.uk,Quick idea for Buena Vida Fitness 💡,sent,cold,Sally,Hilton,Buena Vida Fitness,
+2025-06-21T01:08:11.042577,phil.howarth@hawkridgedistillers.com,Built one tool — got 10+ new clients,sent,cold,Phil,Howarth,Hawkridge Distillers,
+2025-06-21T01:10:05.030143,henry.maitland@core-evolution.co.uk,Quick idea for CORE EVOLUTION LIMITED 💡,sent,cold,Henry,Maitland,CORE EVOLUTION LIMITED,
+2025-06-21T01:10:05.627168,helena@themilestonedetox.com,Quick idea for The Milestone Detox 💡,sent,cold,Helena,Tibocha,The Milestone Detox,
+2025-06-21T01:10:47.445248,ben@bcs.direct,Built one tool — got 10+ new clients,sent,cold,Ben,Ferrer,BCS Supplies Ltd,
+2025-06-21T01:12:38.222036,jasper@weldon.co.uk,Helping Weldon Flooring run smoother,sent,cold,Jasper,Weldon,Weldon Flooring,
+2025-06-21T01:12:39.554823,chris@jkginvestments.co.uk,Built one tool — got 10+ new clients,sent,cold,Chris,Graham,JKG Property Group,
+2025-06-21T01:14:38.176514,mark.chandler@stonewells.net,Helping Stonewells run smoother,sent,cold,Mark,Acabe,Stonewells,
+2025-06-21T01:16:28.970808,carla@worksmarthub.co.uk,Helping WorkSmart Hub Ltd run smoother,sent,cold,Carla,Wells,WorkSmart Hub Ltd,
+2025-06-22T02:11:18.858004,support@mail.com,System Test,sent,warmup,,,,
+2025-06-22T02:13:54.567081,test@gmail.com,Delivery Test,sent,warmup,,,,
+2025-06-22T02:16:00.273916,warmup@outlook.com,SMTP Test Message,sent,warmup,,,,
+2025-06-22T02:17:49.940041,noreply@zoho.com,Connection Check,sent,warmup,,,,
+2025-06-22T02:20:45.592418,noreply@zoho.com,SMTP Test Message,sent,warmup,,,,
+2025-06-22T02:20:46.277692,amanda.mangan@rubiconestates.co.uk,Built one tool — got 10+ new clients,sent,cold,Amanda,Mangan,Rubicon Estates Ltd,
+2025-06-22T02:21:39.948711,tomg@theattic-guys.co.uk,Helping The Attic Guys Ltd run smoother,sent,cold,Thomas,Gilhooley,The Attic Guys Ltd,
+2025-06-22T02:22:38.733945,scott@key-stones.co.uk,Quick idea for Keystones Property 💡,sent,cold,Scott,Jay,Keystones Property,
+2025-06-22T02:22:39.405470,ben@gogglesquad.co.uk,Built one tool — got 10+ new clients,sent,cold,Ben,Ayers,GoggleSquad Swim School,
+2025-06-22T02:24:07.455527,david@fivezeros.co.uk,Built one tool — got 10+ new clients,sent,cold,David,Bush,Five Zeros Supercars Ltd,
+2025-06-22T02:25:20.110032,vera@novanut.com,Helping Nova Nutrition run smoother,sent,cold,Vera,Sterling,Nova Nutrition,
+2025-06-22T02:25:20.757501,aidan@sushirevolution.co.uk,Quick idea for Sushi Revolution 💡,sent,cold,Aidan,Bryan,Sushi Revolution,
+2025-06-22T02:26:17.392974,christie@kbire.com,Helping Knightsbridge International Real Estate run smoother,sent,cold,Christie,Pinnick,Knightsbridge International Real Estate,
+2025-06-22T02:27:37.151028,andy@gyminteriors.com,Built one tool — got 10+ new clients,sent,cold,Andy,Milne,Gym Interiors,
+2025-06-22T02:27:38.114616,matt@tgogc.com,Helping THE GREAT OUTDOOR GYM COMPANY LTD run smoother,sent,cold,Matt,Delaney,THE GREAT OUTDOOR GYM COMPANY LTD,
+2025-06-22T02:28:37.899950,heatherl@jjfmgroup.co.uk,Quick idea for JJFM Group Ltd 💡,sent,cold,Heather,L,JJFM Group Ltd,
+2025-06-22T02:29:30.574490,charlie@enviro-clean.co.uk,Quick idea for Enviro Clean Group Ltd 💡,sent,cold,Charlie,Bridle,Enviro Clean Group Ltd,
+2025-06-22T02:29:31.238615,kashif@bridge2future.co.uk,Helping Bridge2Future Children's Residential Care run smoother,sent,cold,Kashif,Kiani,Bridge2Future Children's Residential Care,
+2025-06-22T02:30:43.014501,zabeda@esp-it-consultancy.com,Quick idea for ESP IT Consultancy Ltd 💡,sent,cold,Zabeda,Ali-Fogarty,ESP IT Consultancy Ltd,
+2025-06-22T02:32:03.619013,dan@freeagent247.com,Quick idea for FreeAgent247® 💡,sent,cold,Daniel,Lewis,FreeAgent247®,
