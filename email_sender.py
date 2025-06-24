@@ -34,11 +34,11 @@ class EmailSender:
                 writer = csv.writer(file)
                 writer.writerow([
                     'timestamp', 'email', 'subject', 'status', 'type', 
-                    'first_name', 'last_name', 'organization', 'template_used'
+                    'first_name', 'last_name', 'organization', 'template_used', 'followup_sequence'
                 ])
     
     def send_email(self, to_email: str, subject: str, body: str, lead_data: Dict = None, 
-                   email_type: str = 'cold', template_index: int = None) -> bool:
+                   email_type: str = 'cold', template_index: int = None, followup_sequence: int = None) -> bool:
         """
         Send an email with HTML formatting and logging
         
@@ -47,8 +47,9 @@ class EmailSender:
             subject (str): Email subject
             body (str): Email body (HTML format)
             lead_data (Dict): Lead information for logging
-            email_type (str): Type of email ('cold', 'warmup')
+            email_type (str): Type of email ('cold', 'warmup', 'followup')
             template_index (int): Template index used (for logging)
+            followup_sequence (int): Follow-up sequence number (for follow-up emails)
             
         Returns:
             bool: True if email sent successfully, False otherwise
@@ -108,7 +109,7 @@ class EmailSender:
                             server.sendmail(self.email_address, to_email, text)
                 
                 # Log successful send
-                self._log_email(to_email, subject, 'sent', email_type, lead_data, template_index)
+                self._log_email(to_email, subject, 'sent', email_type, lead_data, template_index, followup_sequence)
                 return True
                 
             except Exception as e:
@@ -118,7 +119,7 @@ class EmailSender:
                     time.sleep(self.retry_delay)
                 else:
                     print(f"❌ Failed to send email to {to_email} after {self.max_retries} attempts")
-                    self._log_email(to_email, subject, 'failed', email_type, lead_data, template_index)
+                    self._log_email(to_email, subject, 'failed', email_type, lead_data, template_index, followup_sequence)
                     return False
         
         return False
@@ -156,7 +157,7 @@ class EmailSender:
         return text
     
     def _log_email(self, to_email: str, subject: str, status: str, email_type: str, 
-                   lead_data: Dict = None, template_index: int = None):
+                   lead_data: Dict = None, template_index: int = None, followup_sequence: int = None):
         """
         Log email send attempt to CSV file
         
@@ -167,6 +168,7 @@ class EmailSender:
             email_type (str): Type of email
             lead_data (Dict): Lead information
             template_index (int): Template index used
+            followup_sequence (int): Follow-up sequence number
         """
         try:
             with open(self.sent_log_file, 'a', newline='', encoding='utf-8') as file:
@@ -176,11 +178,18 @@ class EmailSender:
                 first_name = lead_data.get('first_name', '') if lead_data else ''
                 last_name = lead_data.get('last_name', '') if lead_data else ''
                 organization = lead_data.get('organization', '') if lead_data else ''
-                template_used = f"Template {template_index}" if template_index else ''
+                
+                # Generate template_used description
+                if email_type == 'followup' and followup_sequence:
+                    template_used = f"Follow-up {followup_sequence}"
+                elif template_index:
+                    template_used = f"Template {template_index}"
+                else:
+                    template_used = ''
                 
                 writer.writerow([
                     timestamp, to_email, subject, status, email_type,
-                    first_name, last_name, organization, template_used
+                    first_name, last_name, organization, template_used, followup_sequence or ''
                 ])
                 
         except Exception as e:

@@ -134,6 +134,40 @@ def send_cold_batch(email_sender, template_engine, leads, count):
     
     return success_count
 
+def send_followup_batch(email_sender, template_engine, followup_leads, count):
+    """Send a batch of follow-up emails with random delays"""
+    print(f"🔄 Sending {count} follow-up emails...")
+    
+    success_count = 0
+    for i in range(min(count, len(followup_leads))):
+        try:
+            lead = followup_leads[i]
+            followup_sequence = lead.get('followup_sequence', 1)
+            days_since_last = lead.get('days_since_last', 0)
+            
+            print(f"📤 Follow-up {followup_sequence} to {lead['first_name']} at {lead['organization']} ({days_since_last} days since last contact)...")
+            
+            # Get personalized follow-up email
+            subject, body = template_engine.get_followup_template_pair(lead, followup_sequence)
+            
+            # Send follow-up email
+            if email_sender.send_email(lead['email'], subject, body, lead, 
+                                     email_type='followup', followup_sequence=followup_sequence):
+                success_count += 1
+                print(f"✅ Successfully sent follow-up {followup_sequence} to {lead['email']}")
+            else:
+                print(f"❌ Failed to send follow-up to {lead['email']}")
+            
+            # Add random delay between follow-up emails (except for last one)
+            if i < count - 1:
+                email_sender.add_random_delay('cold')  # Use cold delay timing for follow-ups
+                
+        except Exception as e:
+            print(f"❌ Error processing follow-up lead {lead.get('email', 'unknown')}: {str(e)}")
+            continue
+    
+    return success_count
+
 def main():
     print("🚀 Starting Advanced Cold Email Outreach System...")
     print("=" * 60)
@@ -163,6 +197,7 @@ def main():
         warmup_sender = WarmupSender()
         
         print(f"\n🎯 Template Engine loaded with {template_engine.get_template_count()} rotating templates")
+        print(f"🔄 Follow-up Engine loaded with {template_engine.get_followup_template_count()} follow-up templates")
         
         # Test SMTP connection first
         print(f"\n🔗 Testing SMTP connection...")
@@ -173,16 +208,26 @@ def main():
         # Load leads for cold emails
         remaining_cold = DAILY_COLD_EMAIL_LIMIT - cold_sent_today
         leads = []
+        followup_leads = []
         
         if remaining_cold > 0:
             print(f"\n📋 Loading leads for {remaining_cold} cold emails...")
             leads = lead_loader.load_leads()
             
             if not leads:
-                print("✅ No new leads to process. All leads have been contacted.")
-                remaining_cold = 0
+                print("✅ No new leads to process. Checking for follow-up opportunities...")
+                # Load follow-up leads when no new leads available
+                followup_leads = lead_loader.load_followup_leads()
+                if not followup_leads:
+                    print("✅ No leads ready for follow-up either. All prospects are up to date.")
+                else:
+                    print(f"🔄 Found {len(followup_leads)} leads ready for follow-up")
             else:
                 print(f"📋 Found {len(leads)} uncontacted leads")
+                # Also load follow-up leads to fill remaining capacity
+                followup_leads = lead_loader.load_followup_leads()
+                if followup_leads:
+                    print(f"🔄 Also found {len(followup_leads)} leads ready for follow-up")
         
         # PHASE 1: Send initial warmup batch (5 emails)
         remaining_warmup = DAILY_WARMUP_EMAIL_LIMIT - warmup_sent_today
@@ -196,16 +241,22 @@ def main():
             
             print(f"✅ Phase 1 complete: {warmup_success}/{initial_warmup_count} warmup emails sent")
         
-        # PHASE 2: Alternating pattern (1 warmup → 3 cold → 1 warmup → 3 cold...)
+        # PHASE 2: Alternating pattern with cold emails and follow-ups
         if remaining_cold > 0 or remaining_warmup > 0:
             print(f"\n📧 PHASE 2: Alternating send pattern")
-            print(f"   Pattern: 1 warmup → 3 cold → 1 warmup → 3 cold...")
+            if leads and followup_leads:
+                print(f"   Pattern: 1 warmup → mix of cold/follow-up emails → repeat")
+            elif leads:
+                print(f"   Pattern: 1 warmup → 3 cold → 1 warmup → 3 cold...")
+            elif followup_leads:
+                print(f"   Pattern: 1 warmup → 3 follow-up → 1 warmup → 3 follow-up...")
             
             cold_sent_phase2 = 0
             warmup_sent_phase2 = 0
             leads_index = 0
+            followup_index = 0
             
-            while (cold_sent_phase2 < remaining_cold or warmup_sent_phase2 < remaining_warmup) and leads_index < len(leads):
+            while (cold_sent_phase2 < remaining_cold or warmup_sent_phase2 < remaining_warmup):
                 
                 # Send 1 warmup email (if quota available)
                 if warmup_sent_phase2 < remaining_warmup:
@@ -214,7 +265,7 @@ def main():
                     warmup_sent_phase2 += warmup_batch_success
                     warmup_sent_today += warmup_batch_success
                 
-                # Send 3 cold emails (if quota and leads available)
+                # Send cold emails (if quota and leads available)
                 if cold_sent_phase2 < remaining_cold and leads_index < len(leads):
                     cold_batch_size = min(3, remaining_cold - cold_sent_phase2, len(leads) - leads_index)
                     print(f"\n🔄 Alternating: Sending {cold_batch_size} cold emails...")
@@ -226,9 +277,21 @@ def main():
                     cold_sent_today += cold_batch_success
                     leads_index += cold_batch_size
                 
-                # Break if we've reached all limits
-                if (cold_sent_today >= DAILY_COLD_EMAIL_LIMIT and 
-                    warmup_sent_today >= DAILY_WARMUP_EMAIL_LIMIT):
+                # Send follow-up emails if no more cold leads or cold quota filled
+                elif followup_index < len(followup_leads) and cold_sent_phase2 < remaining_cold:
+                    followup_batch_size = min(3, remaining_cold - cold_sent_phase2, len(followup_leads) - followup_index)
+                    print(f"\n🔄 Alternating: Sending {followup_batch_size} follow-up emails...")
+                    followup_batch_leads = followup_leads[followup_index:followup_index + followup_batch_size]
+                    
+                    followup_batch_success = send_followup_batch(email_sender, template_engine,
+                                                               followup_batch_leads, followup_batch_size)
+                    cold_sent_phase2 += followup_batch_success  # Follow-ups count toward cold quota
+                    cold_sent_today += followup_batch_success
+                    followup_index += followup_batch_size
+                
+                # Break if we've reached all limits or run out of leads
+                if ((cold_sent_today >= DAILY_COLD_EMAIL_LIMIT and warmup_sent_today >= DAILY_WARMUP_EMAIL_LIMIT) or
+                    (leads_index >= len(leads) and followup_index >= len(followup_leads) and warmup_sent_phase2 >= remaining_warmup)):
                     break
             
             print(f"\n✅ Phase 2 complete:")
@@ -250,8 +313,8 @@ def main():
             print(f"   Cold emails: {stats['cold_emails']}")
             print(f"   Warmup emails: {stats['warmup_emails']}")
         
-        print(f"\n✨ Advanced cold email system completed successfully!")
-        print(f"🎯 Templates rotated randomly | 📡 Smart delays applied | 🔄 Alternating pattern used")
+        print(f"\n✨ Advanced cold email system with follow-ups completed successfully!")
+        print(f"🎯 Templates rotated randomly | 📡 Smart delays applied | 🔄 Follow-up sequences active")
         
     except FileNotFoundError as e:
         print(f"❌ Error: Required file not found - {str(e)}")

@@ -61,6 +61,64 @@ Founder — F van Dijk Ltd<br>
             }
         ]
         
+        # Define 3 follow-up templates with different approaches
+        self.followup_templates = [
+            {
+                "subject": "Re: Quick idea for {{Company Name}} (did this get buried?)",
+                "body": """<p>Hi {{First Name}},</p>
+
+<p>I sent you a message last week about building custom tools for {{Company Name}}, but I know inboxes can get crazy.</p>
+
+<p>I just helped another business owner automate their client booking process — they went from spending 2 hours a day on scheduling to having it all happen automatically. Now they're focusing on what they do best instead of admin work.</p>
+
+<p>If streamlining any part of {{Company Name}}'s operations sounds useful, I'd love to have a quick 10-minute conversation about what's possible.</p>
+
+<p>Best regards,<br>
+Felix van Dijk<br>
+Founder — F van Dijk Ltd<br>
+📞 07956 171906<br>
+🌐 https://felixvandijk.dev/business.html</p>"""
+            },
+            {
+                "subject": "{{Company Name}} — 3 ways I could help",
+                "body": """<p>Hi {{First Name}},</p>
+
+<p>I've been thinking about {{Company Name}} and wanted to share 3 specific ways I could help:</p>
+
+<p>1. <strong>Custom booking system</strong> — eliminate back-and-forth emails and missed appointments<br>
+2. <strong>Client dashboard</strong> — give customers 24/7 access to their information<br>
+3. <strong>Process automation</strong> — turn repetitive tasks into automatic workflows</p>
+
+<p>I recently built a custom portal for a consulting firm that saved them 15 hours per week on client management alone. The owner told me it was the best investment he'd made in years.</p>
+
+<p>Would any of these be valuable for {{Company Name}}? Happy to jump on a brief call to explore what makes sense.</p>
+
+<p>Best regards,<br>
+Felix van Dijk<br>
+Founder — F van Dijk Ltd<br>
+📞 07956 171906<br>
+🌐 https://felixvandijk.dev/business.html</p>"""
+            },
+            {
+                "subject": "Last email — {{Company Name}} automation opportunity",
+                "body": """<p>Hi {{First Name}},</p>
+
+<p>I don't want to keep bothering you, so this will be my last email about helping {{Company Name}} with custom automation.</p>
+
+<p>I'm only taking on 2 more projects before Christmas, and I had {{Company Name}} in mind for one of them. The businesses I work with typically see results within the first month — better client experience, less admin time, more revenue.</p>
+
+<p>If you're interested in exploring what's possible, just reply and I'll send over some examples of what I've built for similar businesses.</p>
+
+<p>If not, no worries at all — I completely understand you're busy running {{Company Name}}.</p>
+
+<p>Best regards,<br>
+Felix van Dijk<br>
+Founder — F van Dijk Ltd<br>
+📞 07956 171906<br>
+🌐 https://felixvandijk.dev/business.html</p>"""
+            }
+        ]
+        
     def get_random_template(self) -> Dict:
         """Get a random template from the available templates"""
         return random.choice(self.templates)
@@ -230,6 +288,52 @@ Founder — F van Dijk Ltd<br>
         """Get number of available templates"""
         return len(self.templates)
     
+    def get_followup_template_count(self) -> int:
+        """Get number of available follow-up templates"""
+        return len(self.followup_templates)
+    
+    def get_random_followup_template(self) -> Dict:
+        """Get a random follow-up template from the available templates"""
+        return random.choice(self.followup_templates)
+    
+    def get_followup_template_pair(self, lead: Dict, followup_sequence: int = 1) -> tuple:
+        """
+        Get a matching subject and body template pair for follow-up emails
+        
+        Args:
+            lead (Dict): Lead information
+            followup_sequence (int): Which follow-up this is (1, 2, or 3)
+            
+        Returns:
+            tuple: (subject, body) both personalized from the same follow-up template
+        """
+        # Use specific follow-up template based on sequence, or random if out of range
+        if 1 <= followup_sequence <= len(self.followup_templates):
+            template = self.followup_templates[followup_sequence - 1]
+        else:
+            template = self.get_random_followup_template()
+        
+        # Replace placeholders in both subject and body
+        replacements = {
+            '{{Company Name}}': lead.get('organization', 'your company'),
+            '{{First Name}}': lead.get('first_name', 'there'),
+            '{{Last Name}}': lead.get('last_name', ''),
+            '{{Title}}': lead.get('title', ''),
+            '{{City}}': lead.get('city', ''),
+            '{{State}}': lead.get('state', ''),
+            '{{Country}}': lead.get('country', ''),
+            '{{industry or location}}': self._get_industry_or_location(lead)
+        }
+        
+        subject = template["subject"]
+        body = template["body"]
+        
+        for placeholder, value in replacements.items():
+            subject = subject.replace(placeholder, str(value))
+            body = body.replace(placeholder, str(value))
+            
+        return subject, body
+    
     def preview_all_templates(self, sample_lead: Dict) -> List[Dict]:
         """
         Generate previews of all templates with sample data
@@ -241,6 +345,8 @@ Founder — F van Dijk Ltd<br>
             List[Dict]: List of template previews
         """
         previews = []
+        
+        # Preview regular templates
         for i, template in enumerate(self.templates):
             subject = template["subject"]
             body = template["body"]
@@ -263,6 +369,35 @@ Founder — F van Dijk Ltd<br>
                 
             previews.append({
                 'template_index': i + 1,
+                'template_type': 'cold',
+                'subject': subject,
+                'body': body
+            })
+        
+        # Preview follow-up templates
+        for i, template in enumerate(self.followup_templates):
+            subject = template["subject"]
+            body = template["body"]
+            
+            # Replace placeholders
+            replacements = {
+                '{{Company Name}}': sample_lead.get('organization', 'Sample Company'),
+                '{{First Name}}': sample_lead.get('first_name', 'John'),
+                '{{Last Name}}': sample_lead.get('last_name', 'Smith'),
+                '{{Title}}': sample_lead.get('title', 'CEO'),
+                '{{City}}': sample_lead.get('city', 'London'),
+                '{{State}}': sample_lead.get('state', 'England'),
+                '{{Country}}': sample_lead.get('country', 'United Kingdom'),
+                '{{industry or location}}': self._get_industry_or_location(sample_lead)
+            }
+            
+            for placeholder, value in replacements.items():
+                subject = subject.replace(placeholder, str(value))
+                body = body.replace(placeholder, str(value))
+                
+            previews.append({
+                'template_index': i + 1,
+                'template_type': 'followup',
                 'subject': subject,
                 'body': body
             })

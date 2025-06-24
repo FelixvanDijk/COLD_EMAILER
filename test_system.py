@@ -214,6 +214,50 @@ def test_integration():
         print(f"❌ Integration test failed: {str(e)}")
         return False
 
+def test_followup_system():
+    """Test follow-up system functionality"""
+    print("\n🧪 Testing Follow-up System...")
+    
+    try:
+        # Test follow-up lead loading
+        loader = LeadLoader('apollo-contacts-export.csv') if os.path.exists('apollo-contacts-export.csv') else None
+        engine = TemplateEngine()
+        
+        if loader:
+            # Test follow-up lead detection
+            followup_leads = loader.load_followup_leads()
+            print(f"✅ Follow-up lead detection working (found {len(followup_leads)} leads)")
+            
+            # Test follow-up intervals configuration
+            intervals = loader.followup_intervals
+            print(f"✅ Follow-up intervals configured: {intervals}")
+        
+        # Test follow-up template generation
+        sample_lead = {
+            'first_name': 'John',
+            'last_name': 'Smith',
+            'organization': 'TechCorp Ltd',
+            'followup_sequence': 1
+        }
+        
+        for sequence in [1, 2, 3]:
+            subject, body = engine.get_followup_template_pair(sample_lead, sequence)
+            print(f"✅ Follow-up sequence {sequence} template generated")
+            
+            # Verify template contains expected content
+            if sequence == 1 and "buried" in subject.lower():
+                print(f"   ✓ Sequence 1 has 'buried' reference")
+            elif sequence == 2 and "3 ways" in subject:
+                print(f"   ✓ Sequence 2 has '3 ways' structure")
+            elif sequence == 3 and "last email" in subject.lower():
+                print(f"   ✓ Sequence 3 has 'last email' urgency")
+        
+        return True
+        
+    except Exception as e:
+        print(f"❌ Follow-up system test failed: {str(e)}")
+        return False
+
 def main():
     """Run all tests"""
     print("🚀 Advanced Cold Email System - Component Tests")
@@ -227,7 +271,8 @@ def main():
         ("Template Engine", test_template_engine),
         ("Email Sender", test_email_sender),
         ("Warmup Sender", test_warmup_sender),
-        ("Integration", test_integration)
+        ("Integration", test_integration),
+        ("Follow-up System", test_followup_system)
     ]
     
     results = []
@@ -254,17 +299,20 @@ def main():
     print(f"\n🎯 Overall: {passed}/{len(results)} tests passed")
     
     if passed == len(results):
-        print("🎉 All tests passed! Advanced system is ready to use.")
+        print("🎉 All tests passed! Advanced system with follow-ups is ready to use.")
         print("\n✨ System Features Ready:")
-        print("   🔄 3 Rotating email templates")
-        print("   📧 HTML email formatting")
+        print("   🔄 3 Rotating cold email templates")
+        print("   📧 3 Follow-up email templates (7/14/21 day intervals)")
+        print("   📧 HTML email formatting with proper paragraph spacing")
         print("   ⏱️  Random delay intervals")
         print("   🔄 Smart alternating send pattern")
-        print("   📊 Enhanced logging and statistics")
+        print("   📊 Enhanced logging and statistics tracking")
+        print("   🔄 Automatic follow-up sequence management")
         print("\nNext steps:")
         print("1. Ensure your .env file is configured")
         print("2. Add your apollo-contacts-export.csv file")
         print("3. Run: python main.py")
+        print("4. System will automatically send follow-ups when no new leads available")
     else:
         print("⚠️  Some tests failed. Please fix issues before running main system.")
     
